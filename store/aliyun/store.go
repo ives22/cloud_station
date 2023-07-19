@@ -1,9 +1,11 @@
 package aliyun
 
 import (
+	"errors"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/ives22/cloud_station/store"
+	"os"
 )
 
 var (
@@ -15,9 +17,34 @@ type AliOssStore struct {
 	client *oss.Client
 }
 
+type Options struct {
+	EndPoint     string
+	AccessKey    string
+	AccessSecret string
+}
+
+func (o *Options) Validate() error {
+	if o.EndPoint == "" || o.AccessKey == "" || o.AccessSecret == "" {
+		return errors.New("endPoint, accessKey, accessSecret has one empty")
+	}
+	return nil
+}
+
+func NewDefaultAliOssStore() (*AliOssStore, error) {
+	return NewAliOssStore(&Options{
+		EndPoint:     os.Getenv("ALI_OSS_ENDPOINT"),
+		AccessKey:    os.Getenv("ALI_AK"),
+		AccessSecret: os.Getenv("ALI_SK"),
+	})
+}
+
 // NewAliOssStore AliOssStore对象的构造函数
-func NewAliOssStore(endPoint, accessKey, accessSecret string) (*AliOssStore, error) {
-	c, err := oss.New(endPoint, accessKey, accessSecret)
+func NewAliOssStore(opts *Options) (*AliOssStore, error) {
+	// 校验参数
+	if err := opts.Validate(); err != nil {
+		return nil, err
+	}
+	c, err := oss.New(opts.EndPoint, opts.AccessKey, opts.EndPoint)
 	if err != nil {
 		return nil, err
 	}
