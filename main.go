@@ -11,8 +11,8 @@ import (
 var (
 	// 程序内置
 	endpint      = "oss-cn-chengdu.aliyuncs.com"
-	accessKey    = "LTAI5tDCrKnrFjRpEJVnRqP4"
-	accessSecret = "aSwxQYD1VwQuDlgNvr4zQMNQ7mpidC"
+	accessKey    = "xx"
+	accessSecret = "xx"
 
 	// 默认配置
 	bucketName = "devcloud-tool"
