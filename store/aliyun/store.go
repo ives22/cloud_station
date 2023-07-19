@@ -44,7 +44,7 @@ func NewAliOssStore(opts *Options) (*AliOssStore, error) {
 	if err := opts.Validate(); err != nil {
 		return nil, err
 	}
-	c, err := oss.New(opts.EndPoint, opts.AccessKey, opts.EndPoint)
+	c, err := oss.New(opts.EndPoint, opts.AccessKey, opts.AccessSecret)
 	if err != nil {
 		return nil, err
 	}
