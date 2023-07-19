@@ -11,8 +11,8 @@ import (
 var (
 	// 程序内置
 	endpint      = "oss-cn-chengdu.aliyuncs.com"
-	accessKey    = "xx"
-	accessSecret = "xx"
+	accessKey    = "LTAI5tDCrKnrFjRpEJVnRqP4"
+	accessSecret = "aSwxQYD1VwQuDlgNvr4zQMNQ7mpidC"
 
 	// 默认配置
 	bucketName = "devcloud-tool"
@@ -39,7 +39,18 @@ func upload(filePath string) error {
 	}
 
 	// 3.上传文件到该bucket
-	return bucket.PutObjectFromFile(filePath, filePath)
+	if err := bucket.PutObjectFromFile(filePath, filePath); err != nil {
+		return err
+	}
+
+	// 4.打印下载链接
+	downloadUrl, err := bucket.SignURL(filePath, oss.HTTPGet, 60*60*24)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("文件下载URL: %s\n", downloadUrl)
+	fmt.Println("请在1天之内下载.")
+	return nil
 }
 
 // validate 参数合法性检查
